@@ -1,0 +1,47 @@
+
+AVIP 2026 — Ethical Keylogger Simulation
+Usage & Authorization Declaration
+
+Project:
+Ghost Protocol — Ethical Keylogger Simulation
+
+I declare that this project is intended strictly for authorized
+educational cybersecurity testing.
+
+I confirm that any practical testing of the simulator will be
+performed only:
+
+1. On a device that I personally own, OR
+2. On a device for which I have received explicit permission from
+   the device owner.
+
+I will not use this project to:
+
+- Monitor another person's device without permission.
+- Capture credentials or private information.
+- Install hidden or persistent monitoring mechanisms.
+- Monitor applications outside the simulator.
+- Circumvent operating-system security controls.
+- Transmit captured data to unauthorized third parties.
+
+The simulator is designed as an application-local educational
+simulation and includes an ABORT kill-switch and local encrypted
+storage.
+
+I understand that I am responsible for complying with applicable
+laws, institutional policies, and authorization requirements.
+
+Name: SILAMBARASAN C
+
+Program: Arithmatrix Virtual Internship Program (AVIP) 2026
+
+Domain: CyberSecurity
+
+Task: 3 — Ethical Keylogger Simulation
+
+Date: 02 September 2026
+
+Signature: ______________________________
+
+
+Declaration Status: SIGNED FOR AUTHORIZED EDUCATIONAL USE ONLY

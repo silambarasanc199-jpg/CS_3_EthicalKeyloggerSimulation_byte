@@ -1,0 +1,23 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+venv/
+.venv/
+env/
+
+# Encryption secrets
+secret.key
+
+# Local generated logs
+logs/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Jupyter / Colab
+.ipynb_checkpoints/
