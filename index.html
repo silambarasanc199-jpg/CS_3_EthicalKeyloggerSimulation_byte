@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Ghost Protocol - Ethical Keylogger Simulation | AVIP 2026 CyberSecurity Task 3"
+    >
+
+    <title>Ghost Protocol | Ethical Keylogger Simulation</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Background -->
+    <div class="grid-background"></div>
+    <div class="glow glow-one"></div>
+    <div class="glow glow-two"></div>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="brand">
+
+            <div class="brand-logo">
+                ◈
+            </div>
+
+            <div>
+                <h1>GHOST PROTOCOL</h1>
+                <p>ETHICAL SECURITY SIMULATION</p>
+            </div>
+
+        </div>
+
+        <div class="system-status">
+            <span class="status-dot"></span>
+            LOCAL SIMULATION
+        </div>
+
+    </header>
+
+
+    <!-- Main -->
+    <main class="container">
+
+        <!-- Hero -->
+        <section class="hero">
+
+            <div class="hero-label">
+                AVIP 2026
+                <span>•</span>
+                CYBERSECURITY
+                <span>•</span>
+                TASK 03
+            </div>
+
+            <h2>
+                Ethical Keylogger
+                <span>Simulation</span>
+            </h2>
+
+            <p class="hero-description">
+                A controlled cybersecurity demonstration of
+                application-local key-event simulation,
+                encrypted data handling and emergency shutdown.
+            </p>
+
+            <div class="authorization-warning">
+
+                <div class="warning-icon">⚠</div>
+
+                <div>
+                    <strong>AUTHORIZED EDUCATIONAL USE ONLY</strong>
+
+                    <p>
+                        This web demonstration does not monitor your
+                        operating system, background applications,
+                        passwords or other devices.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Dashboard -->
+        <section class="dashboard">
+
+
+            <!-- Simulation -->
+            <article class="card simulation-card">
+
+                <div class="card-heading">
+
+                    <div>
+                        <span class="eyebrow">01 / SIMULATION</span>
+                        <h3>Application-Local Input</h3>
+                    </div>
+
+                    <div class="ready-badge" id="readyBadge">
+                        <span></span>
+                        READY
+                    </div>
+
+                </div>
+
+                <p class="card-description">
+                    Type only inside this box to simulate authorized
+                    key events. Nothing is captured outside this page.
+                </p>
+
+                <div class="input-wrapper">
+
+                    <div class="input-topbar">
+                        <span>LOCAL INPUT TERMINAL</span>
+
+                        <span id="inputStatus">
+                            ACTIVE
+                        </span>
+                    </div>
+
+                    <textarea
+                        id="inputBox"
+                        placeholder="Type authorized demo text here..."
+                        autocomplete="off"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        spellcheck="false"
+                    ></textarea>
+
+                </div>
+
+                <div class="counter-row">
+
+                    <span>
+                        Simulated key events
+                    </span>
+
+                    <strong id="keyCount">
+                        0
+                    </strong>
+
+                </div>
+
+            </article>
+
+
+            <!-- Security Status -->
+            <article class="card security-card">
+
+                <span class="eyebrow">
+                    02 / SECURITY STATUS
+                </span>
+
+                <div class="security-main">
+
+                    <div class="shield-icon" id="shieldIcon">
+                        ✓
+                    </div>
+
+                    <div>
+                        <h3 id="statusTitle">
+                            SYSTEM READY
+                        </h3>
+
+                        <p id="statusText">
+                            Waiting for authorized simulation input.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="security-list">
+
+                    <div class="security-row">
+                        <span>Global monitoring</span>
+                        <strong>DISABLED</strong>
+                    </div>
+
+                    <div class="security-row">
+                        <span>Remote transmission</span>
+                        <strong>DISABLED</strong>
+                    </div>
+
+                    <div class="security-row">
+                        <span>Credential collection</span>
+                        <strong>DISABLED</strong>
+                    </div>
+
+                    <div class="security-row">
+                        <span>Encryption</span>
+                        <strong>AES-GCM</strong>
+                    </div>
+
+                    <div class="security-row">
+                        <span>Kill-switch</span>
+                        <strong>ABORT</strong>
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- Kill Switch -->
+            <article class="card kill-card">
+
+                <div class="kill-heading">
+                    <span class="eyebrow">
+                        03 / EMERGENCY CONTROL
+                    </span>
+
+                    <div class="danger-indicator">
+                        SAFETY CONTROL
+                    </div>
+                </div>
+
+                <h3>
+                    ABORT Kill-Switch
+                </h3>
+
+                <p>
+                    Type the sequence below inside the simulation
+                    input to trigger the emergency shutdown flow.
+                </p>
+
+                <div class="abort-display">
+
+                    <span>A</span>
+                    <span>B</span>
+                    <span>O</span>
+                    <span>R</span>
+                    <span>T</span>
+
+                </div>
+
+                <div class="abort-flow">
+
+                    <div>
+                        <span>01</span>
+                        ENCRYPT
+                    </div>
+
+                    <i>→</i>
+
+                    <div>
+                        <span>02</span>
+                        PURGE PLAINTEXT
+                    </div>
+
+                    <i>→</i>
+
+                    <div>
+                        <span>03</span>
+                        SHUTDOWN
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- Data Controls -->
+            <article class="card controls-card">
+
+                <span class="eyebrow">
+                    04 / DATA CONTROLS
+                </span>
+
+                <h3>
+                    Local Data Handling
+                </h3>
+
+                <p class="card-description">
+                    Demonstrate encryption and data purge using
+                    browser-local simulation data.
+                </p>
+
+                <div class="button-group">
+
+                    <button
+                        id="encryptBtn"
+                        class="btn primary"
+                    >
+                        <span>🔐</span>
+                        Encrypt Simulation
+                    </button>
+
+                    <button
+                        id="purgeBtn"
+                        class="btn danger"
+                    >
+                        <span>🗑</span>
+                        Purge Data
+                    </button>
+
+                    <button
+                        id="resetBtn"
+                        class="btn secondary"
+                    >
+                        <span>↻</span>
+                        Reset
+                    </button>
+
+                </div>
+
+                <div
+                    id="actionMessage"
+                    class="action-message"
+                >
+                    System ready. No action performed.
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- Encrypted Data -->
+        <section class="encrypted-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="eyebrow">
+                        05 / ENCRYPTED OUTPUT
+                    </span>
+
+                    <h2>
+                        Protected Simulation Data
+                    </h2>
+                </div>
+
+                <div
+                    class="encryption-status"
+                    id="encryptionStatus"
+                >
+                    NOT ENCRYPTED
+                </div>
+
+            </div>
+
+
+            <div class="encrypted-panel">
+
+                <div class="terminal-header">
+
+                    <div class="terminal-dots">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </div>
+
+                    <span>
+                        encrypted_simulation.log
+                    </span>
+
+                    <span class="terminal-lock">
+                        🔒
+                    </span>
+
+                </div>
+
+                <pre id="encryptedOutput">No encrypted data available.
+
+Run a simulation and select
+"Encrypt Simulation" to generate
+protected output.</pre>
+
+            </div>
+
+        </section>
+
+
+        <!-- Architecture -->
+        <section class="architecture">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="eyebrow">
+                        06 / SECURITY ARCHITECTURE
+                    </span>
+
+                    <h2>
+                        Controlled by design
+                    </h2>
+                </div>
+
+            </div>
+
+
+            <div class="architecture-grid">
+
+                <div class="architecture-item">
+
+                    <div class="architecture-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Local Input
+                    </h3>
+
+                    <p>
+                        Input is processed only within the
+                        simulation webpage.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-item">
+
+                    <div class="architecture-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Kill-Switch
+                    </h3>
+
+                    <p>
+                        The ABORT sequence activates the
+                        emergency safety flow.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-item">
+
+                    <div class="architecture-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Encryption
+                    </h3>
+
+                    <p>
+                        Browser Web Crypto AES-GCM protects
+                        simulated data locally.
+                    </p>
+
+                </div>
+
+
+                <div class="architecture-item">
+
+                    <div class="architecture-number">
+                        04
+                    </div>
+
+                    <h3>
+                        Data Purge
+                    </h3>
+
+                    <p>
+                        Plaintext simulation data is removed
+                        when purge is activated.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Ethics -->
+        <section class="ethics-section">
+
+            <div class="ethics-icon">
+                ⚖
+            </div>
+
+            <div>
+
+                <span class="eyebrow">
+                    ETHICS & CONSENT
+                </span>
+
+                <h2>
+                    Built for authorized cybersecurity education
+                </h2>
+
+                <p>
+                    This project is strictly an educational simulation.
+                    It does not implement global keyboard hooks,
+                    hidden monitoring, persistence, credential harvesting,
+                    evasion or remote data collection.
+                </p>
+
+                <p>
+                    Testing must be limited to the developer's own
+                    device or systems where explicit authorization
+                    has been provided.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer>
+
+        <div>
+            <strong>GHOST PROTOCOL</strong>
+            <span>
+                • AVIP 2026 • CYBERSECURITY TASK 03
+            </span>
+        </div>
+
+        <div>
+            APPLICATION-LOCAL SIMULATION
+        </div>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
