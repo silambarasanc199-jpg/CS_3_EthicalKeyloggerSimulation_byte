@@ -1,0 +1,829 @@
+"use strict";
+
+
+/* =========================================
+   GHOST PROTOCOL
+   Ethical Keylogger Web Simulation
+========================================= */
+
+
+const inputBox = document.getElementById("inputBox");
+
+const keyCount = document.getElementById("keyCount");
+
+const encryptBtn = document.getElementById("encryptBtn");
+const purgeBtn = document.getElementById("purgeBtn");
+const resetBtn = document.getElementById("resetBtn");
+
+const actionMessage = document.getElementById("actionMessage");
+
+const statusTitle = document.getElementById("statusTitle");
+const statusText = document.getElementById("statusText");
+
+const shieldIcon = document.getElementById("shieldIcon");
+
+const encryptionStatus =
+    document.getElementById("encryptionStatus");
+
+const encryptedOutput =
+    document.getElementById("encryptedOutput");
+
+const killCard =
+    document.querySelector(".kill-card");
+
+const readyBadge =
+    document.getElementById("readyBadge");
+
+const inputStatus =
+    document.getElementById("inputStatus");
+
+const abortLetters =
+    document.querySelectorAll(".abort-display span");
+
+
+/* =========================================
+   STATE
+========================================= */
+
+let simulatedKeyCount = 0;
+
+let abortBuffer = "";
+
+let encryptedData = null;
+
+let simulationActive = true;
+
+
+/* =========================================
+   CONSTANTS
+========================================= */
+
+const ABORT_SEQUENCE = "ABORT";
+
+const STORAGE_KEY =
+    "ghost_protocol_demo_encrypted_data";
+
+
+/* =========================================
+   INITIALIZE
+========================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    loadPreviousEncryptedState();
+
+    inputBox.focus();
+
+});
+
+
+/* =========================================
+   KEY SIMULATION
+========================================= */
+
+inputBox.addEventListener("input", (event) => {
+
+    if (!simulationActive) {
+        return;
+    }
+
+    const currentValue = inputBox.value;
+
+    simulatedKeyCount = currentValue.length;
+
+    keyCount.textContent =
+        simulatedKeyCount.toString();
+
+    processAbortSequence(currentValue);
+
+    if (simulatedKeyCount > 0) {
+
+        setStatus(
+            "SIMULATION ACTIVE",
+            "Authorized local simulation input detected.",
+            "active"
+        );
+
+        inputStatus.textContent = "CAPTURING";
+
+    } else {
+
+        setStatus(
+            "SYSTEM READY",
+            "Waiting for authorized simulation input.",
+            "ready"
+        );
+
+        inputStatus.textContent = "ACTIVE";
+    }
+
+});
+
+
+/* =========================================
+   ABORT DETECTION
+========================================= */
+
+function processAbortSequence(text) {
+
+    const normalized =
+        text.toUpperCase();
+
+    abortBuffer =
+        normalized.slice(-ABORT_SEQUENCE.length);
+
+    updateAbortVisual();
+
+    if (abortBuffer === ABORT_SEQUENCE) {
+
+        triggerAbort();
+
+    }
+
+}
+
+
+/* =========================================
+   ABORT VISUAL
+========================================= */
+
+function updateAbortVisual() {
+
+    abortLetters.forEach((letter, index) => {
+
+        const expected =
+            ABORT_SEQUENCE[index];
+
+        const active =
+            abortBuffer[index] === expected;
+
+        letter.classList.toggle(
+            "active",
+            active
+        );
+
+    });
+
+}
+
+
+/* =========================================
+   ABORT KILL-SWITCH
+========================================= */
+
+async function triggerAbort() {
+
+    if (!simulationActive) {
+        return;
+    }
+
+    simulationActive = false;
+
+    inputBox.disabled = true;
+
+    inputStatus.textContent =
+        "ABORT";
+
+    readyBadge.innerHTML =
+        "<span></span> SHUTDOWN";
+
+    killCard.classList.add(
+        "abort-active"
+    );
+
+    setStatus(
+        "ABORT DETECTED",
+        "Emergency shutdown sequence activated.",
+        "danger"
+    );
+
+    showMessage(
+        "ABORT detected — encrypting simulation data..."
+    );
+
+
+    /*
+        Encrypt current simulation data.
+    */
+
+    if (inputBox.value.length > 0) {
+
+        await encryptSimulation(
+            true
+        );
+
+    }
+
+
+    /*
+        Remove plaintext from the
+        active simulation interface.
+    */
+
+    inputBox.value = "";
+
+    simulatedKeyCount = 0;
+
+    keyCount.textContent = "0";
+
+    abortBuffer = "";
+
+    updateAbortVisual();
+
+
+    /*
+        Final shutdown state.
+    */
+
+    inputStatus.textContent =
+        "SHUTDOWN";
+
+    setStatus(
+        "SIMULATION SHUT DOWN",
+        "ABORT sequence completed. Plaintext cleared.",
+        "danger"
+    );
+
+    showMessage(
+        "✓ ABORT complete — encrypted data preserved, plaintext cleared."
+    );
+
+}
+
+
+/* =========================================
+   ENCRYPT BUTTON
+========================================= */
+
+encryptBtn.addEventListener(
+    "click",
+    async () => {
+
+        if (!simulationActive) {
+
+            showMessage(
+                "Simulation is shut down. Press Reset to start again."
+            );
+
+            return;
+        }
+
+        if (!inputBox.value.trim()) {
+
+            showMessage(
+                "Nothing to encrypt. Enter simulation data first."
+            );
+
+            return;
+        }
+
+        await encryptSimulation(false);
+
+    }
+);
+
+
+/* =========================================
+   AES-GCM ENCRYPTION
+========================================= */
+
+async function encryptSimulation(
+    triggeredByAbort
+) {
+
+    try {
+
+        const plaintext =
+            inputBox.value;
+
+        if (!plaintext) {
+
+            if (!triggeredByAbort) {
+
+                showMessage(
+                    "No plaintext simulation data available."
+                );
+
+            }
+
+            return;
+
+        }
+
+
+        /*
+            Generate a new AES-GCM key.
+        */
+
+        const key =
+            await crypto.subtle.generateKey(
+                {
+                    name: "AES-GCM",
+                    length: 256
+                },
+                true,
+                [
+                    "encrypt",
+                    "decrypt"
+                ]
+            );
+
+
+        /*
+            Generate random IV.
+        */
+
+        const iv =
+            crypto.getRandomValues(
+                new Uint8Array(12)
+            );
+
+
+        /*
+            Encode plaintext.
+        */
+
+        const encoder =
+            new TextEncoder();
+
+        const encoded =
+            encoder.encode(plaintext);
+
+
+        /*
+            Encrypt.
+        */
+
+        const encrypted =
+            await crypto.subtle.encrypt(
+                {
+                    name: "AES-GCM",
+                    iv: iv
+                },
+                key,
+                encoded
+            );
+
+
+        /*
+            Export key.
+        */
+
+        const rawKey =
+            await crypto.subtle.exportKey(
+                "raw",
+                key
+            );
+
+
+        /*
+            Convert to Base64.
+        */
+
+        const keyBase64 =
+            arrayBufferToBase64(rawKey);
+
+        const ivBase64 =
+            arrayBufferToBase64(iv);
+
+        const encryptedBase64 =
+            arrayBufferToBase64(encrypted);
+
+
+        /*
+            Build demo encrypted record.
+        */
+
+        encryptedData = {
+            algorithm: "AES-256-GCM",
+            timestamp: new Date().toISOString(),
+            iv: ivBase64,
+            key: keyBase64,
+            ciphertext: encryptedBase64
+        };
+
+
+        /*
+            Save only encrypted demo data.
+        */
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            JSON.stringify(encryptedData)
+        );
+
+
+        /*
+            Display encrypted result.
+        */
+
+        displayEncryptedData(
+            encryptedData
+        );
+
+
+        /*
+            Remove plaintext from
+            simulation input.
+        */
+
+        inputBox.value = "";
+
+        simulatedKeyCount = 0;
+
+        keyCount.textContent = "0";
+
+        abortBuffer = "";
+
+        updateAbortVisual();
+
+
+        encryptionStatus.textContent =
+            "ENCRYPTED";
+
+        encryptionStatus.classList.add(
+            "encrypted"
+        );
+
+
+        setStatus(
+            "DATA PROTECTED",
+            "Simulation data encrypted using AES-256-GCM.",
+            "secure"
+        );
+
+
+        if (triggeredByAbort) {
+
+            showMessage(
+                "✓ ABORT flow: data encrypted and plaintext cleared."
+            );
+
+        } else {
+
+            showMessage(
+                "✓ Simulation encrypted successfully. Plaintext cleared."
+            );
+
+        }
+
+    } catch (error) {
+
+        console.error(error);
+
+        showMessage(
+            "Encryption failed. Please try again."
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   DISPLAY ENCRYPTED DATA
+========================================= */
+
+function displayEncryptedData(
+    data
+) {
+
+    const output = [
+        "ALGORITHM : " + data.algorithm,
+        "TIMESTAMP : " + data.timestamp,
+        "",
+        "IV:",
+        data.iv,
+        "",
+        "CIPHERTEXT:",
+        data.ciphertext,
+        "",
+        "STATUS: ENCRYPTED"
+    ].join("\n");
+
+
+    encryptedOutput.textContent =
+        output;
+
+}
+
+
+/* =========================================
+   PURGE
+========================================= */
+
+purgeBtn.addEventListener(
+    "click",
+    () => {
+
+        inputBox.value = "";
+
+        simulatedKeyCount = 0;
+
+        keyCount.textContent = "0";
+
+        abortBuffer = "";
+
+        updateAbortVisual();
+
+
+        /*
+            Remove encrypted demo data.
+        */
+
+        localStorage.removeItem(
+            STORAGE_KEY
+        );
+
+        encryptedData = null;
+
+
+        encryptedOutput.textContent =
+            "No encrypted data available.\n\n" +
+            "All local simulation data has been purged.";
+
+
+        encryptionStatus.textContent =
+            "PURGED";
+
+        encryptionStatus.classList.remove(
+            "encrypted"
+        );
+
+
+        setStatus(
+            "DATA PURGED",
+            "Local simulation data has been removed.",
+            "secure"
+        );
+
+
+        showMessage(
+            "✓ Simulation data purged successfully."
+        );
+
+    }
+);
+
+
+/* =========================================
+   RESET
+========================================= */
+
+resetBtn.addEventListener(
+    "click",
+    () => {
+
+        simulationActive = true;
+
+        inputBox.disabled = false;
+
+        inputBox.value = "";
+
+        simulatedKeyCount = 0;
+
+        keyCount.textContent = "0";
+
+        abortBuffer = "";
+
+        encryptedData = null;
+
+
+        readyBadge.innerHTML =
+            "<span></span> READY";
+
+        inputStatus.textContent =
+            "ACTIVE";
+
+
+        killCard.classList.remove(
+            "abort-active"
+        );
+
+
+        encryptionStatus.textContent =
+            "NOT ENCRYPTED";
+
+        encryptionStatus.classList.remove(
+            "encrypted"
+        );
+
+
+        encryptedOutput.textContent =
+            "No encrypted data available.\n\n" +
+            "Run a simulation and select\n" +
+            "\"Encrypt Simulation\" to generate\n" +
+            "protected output.";
+
+
+        setStatus(
+            "SYSTEM READY",
+            "Waiting for authorized simulation input.",
+            "ready"
+        );
+
+
+        showMessage(
+            "Simulation reset. Ready for authorized input."
+        );
+
+
+        updateAbortVisual();
+
+        inputBox.focus();
+
+    }
+);
+
+
+/* =========================================
+   STATUS HANDLER
+========================================= */
+
+function setStatus(
+    title,
+    description,
+    mode
+) {
+
+    statusTitle.textContent =
+        title;
+
+    statusText.textContent =
+        description;
+
+
+    if (mode === "danger") {
+
+        shieldIcon.textContent =
+            "!";
+
+        shieldIcon.style.color =
+            "var(--red)";
+
+        shieldIcon.style.background =
+            "rgba(255, 83, 111, 0.08)";
+
+    } else {
+
+        shieldIcon.textContent =
+            "✓";
+
+        shieldIcon.style.color =
+            "var(--green)";
+
+        shieldIcon.style.background =
+            "rgba(59, 229, 141, 0.06)";
+
+    }
+
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+function showMessage(
+    message
+) {
+
+    actionMessage.textContent =
+        message;
+
+}
+
+
+/* =========================================
+   BASE64 CONVERTER
+========================================= */
+
+function arrayBufferToBase64(
+    buffer
+) {
+
+    const bytes =
+        new Uint8Array(buffer);
+
+    let binary = "";
+
+    const chunkSize = 0x8000;
+
+    for (
+        let i = 0;
+        i < bytes.length;
+        i += chunkSize
+    ) {
+
+        const chunk =
+            bytes.subarray(
+                i,
+                i + chunkSize
+            );
+
+        binary += String.fromCharCode(
+            ...chunk
+        );
+
+    }
+
+    return btoa(binary);
+
+}
+
+
+/* =========================================
+   LOAD PREVIOUS ENCRYPTED STATE
+========================================= */
+
+function loadPreviousEncryptedState() {
+
+    try {
+
+        const stored =
+            localStorage.getItem(
+                STORAGE_KEY
+            );
+
+        if (!stored) {
+            return;
+        }
+
+        encryptedData =
+            JSON.parse(stored);
+
+
+        displayEncryptedData(
+            encryptedData
+        );
+
+
+        encryptionStatus.textContent =
+            "ENCRYPTED";
+
+        encryptionStatus.classList.add(
+            "encrypted"
+        );
+
+
+        setStatus(
+            "DATA PROTECTED",
+            "Encrypted simulation data is available locally.",
+            "secure"
+        );
+
+
+        showMessage(
+            "Encrypted simulation data restored from local browser storage."
+        );
+
+    } catch (error) {
+
+        console.warn(
+            "Unable to restore encrypted state.",
+            error
+        );
+
+    }
+
+}
+
+
+/* =========================================
+   KEYBOARD SHORTCUT
+========================================= */
+
+document.addEventListener(
+    "keydown",
+    (event) => {
+
+        /*
+            Escape clears the current
+            simulation input.
+
+            This is only a webpage shortcut.
+        */
+
+        if (
+            event.key === "Escape" &&
+            simulationActive
+        ) {
+
+            inputBox.value = "";
+
+            simulatedKeyCount = 0;
+
+            keyCount.textContent = "0";
+
+            abortBuffer = "";
+
+            updateAbortVisual();
+
+            showMessage(
+                "Current simulation input cleared."
+            );
+
+        }
+
+    }
+);
